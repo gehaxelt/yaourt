@@ -129,6 +129,10 @@ classify_pkg() {
 		((REFRESH)) && printf -vprefix "\r " || printf -vprefix "\r"
 	fi
 	while read pkgname repo rversion lversion outofdate maintainer pkgdesc; do
+		if [[ "${IGNORED_PACKAGES[@]}" =~ "$repo/$pkgname" ]]; then
+			continue;
+		fi
+		
 		printf -v pkgdesc "%q" "$pkgdesc"
 		if [[ "$repo" = "aur" && ${lversion#-} ]] || [[ "$repo" = "local" ]]; then
 			((DETAILUPGRADE<2)) && echo -en "$prefix$(gettext 'Foreign packages: ')${bar:$((++i%4)):1} $i / $1"

@@ -24,6 +24,7 @@
 # If the package "abs" is installed, those var are parsed from abs.conf
 #REPOS=()           # REPOS available at $SYNCSERVER
 #SYNCSERVER=""
+#IGNORED_PACKAGES=() #A list of ignored packages. E.g. ("aur/btsync" "aur/dropbox")
 
 # AUR
 #AURURL="@aururl@"
