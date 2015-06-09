@@ -122,6 +122,7 @@ classify_pkg() {
 	unset srcpkgs pkgs
 	longestpkg=(0 0)
 	local i=0 bar="|/-\\"
+	local pkg_nb=$1
 	local pkgname repo rversion lversion outofdate pkgdesc maintainer \
 	      pkgver lrel rrel lver rver
 	local prefix=''
@@ -130,12 +131,13 @@ classify_pkg() {
 	fi
 	while read pkgname repo rversion lversion outofdate maintainer pkgdesc; do
 		if [[ "${IGNORED_PACKAGES[@]}" =~ "$repo/$pkgname" ]]; then
+			pkg_nb=$(($pkg_nb - 1))
 			continue;
 		fi
 		
 		printf -v pkgdesc "%q" "$pkgdesc"
 		if [[ "$repo" = "aur" && ${lversion#-} ]] || [[ "$repo" = "local" ]]; then
-			((DETAILUPGRADE<2)) && echo -en "$prefix$(gettext 'Foreign packages: ')${bar:$((++i%4)):1} $i / $1"
+			((DETAILUPGRADE<2)) && echo -en "$prefix$(gettext 'Foreign packages: ')${bar:$((++i%4)):1} $i / $pkg_nb"
 			[[ "$repo" = "local" ]] && continue
 			aur_update_exists "$pkgname" "$rversion" "$lversion" "$outofdate" "$maintainer" \
 				|| continue
